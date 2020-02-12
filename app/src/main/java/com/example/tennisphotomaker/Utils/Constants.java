@@ -12,18 +12,19 @@ public class Constants {
 
     /* Result writing settings */
     public static int NAMES_COLOR = Color.WHITE;
-    public static int RESULT_COLOR = 0xFF223667;
-    public static int TEXT_SIZE = 120;
-    public static int FIRST_ROW_Y = 160;
-    public static int SECOND_ROW_Y = 380;
-    public static int NAMES_X = 60;
+    public static int RESULT_COLOR = Color.WHITE;
+    //public static int RESULT_COLOR = 0xFF223667;
+    public static int TEXT_SIZE = 150;
+    public static int FIRST_ROW_Y = 180;
+    public static int SECOND_ROW_Y = 400;
+    public static int NAMES_X = 550;
     // 2 sets
-    public static int FIRST_RESULT_2_SET = 860;
-    public static int SECOND_RESULT_2_SET = 1060;
+    public static int FIRST_RESULT_2_SET = 1960;
+    public static int SECOND_RESULT_2_SET = 2170;
     // 3 sets
-    public static int FIRST_RESULT_3_SET = 750;
-    public static int SECOND_RESULT_3_SET = 900;
-    public static int THIRD_RESULT_3_SET = 1050;
+    public static int FIRST_RESULT_3_SET = 1850;
+    public static int SECOND_RESULT_3_SET = 2025;
+    public static int THIRD_RESULT_3_SET = 2200;
 
 
 }

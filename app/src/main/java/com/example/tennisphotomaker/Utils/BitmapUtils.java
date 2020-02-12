@@ -26,11 +26,11 @@ public class BitmapUtils {
     }
 
 
-    public static Bitmap overlay(Bitmap bmp1, Bitmap bmp2) {
+    public static Bitmap overlay(Bitmap bmp1, Bitmap bmp2, float offsetX, float offsetY) {
         Bitmap bmOverlay = Bitmap.createBitmap(bmp1.getWidth(), bmp1.getHeight(), bmp1.getConfig());
         Canvas canvas = new Canvas(bmOverlay);
-        canvas.drawBitmap(bmp1, new Matrix(), null);
-        canvas.drawBitmap(bmp2, new Matrix(), null);
+        canvas.drawBitmap(bmp1, 0, 0, null);
+        canvas.drawBitmap(bmp2, offsetX, offsetY, null);
         return bmOverlay;
     }
 

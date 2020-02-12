@@ -13,6 +13,7 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -114,9 +115,13 @@ public class MainActivity extends AppCompatActivity {
     /* ***************************** Create photo *************************** */
 
     private void createPhoto() {
-        mResultDraw = BitmapFactory.decodeResource(getResources(), R.drawable.resultado_torneo);
+        mResultDraw = BitmapFactory.decodeResource(getResources(), R.drawable.resultado_torneo2);
+        Log.d("Result", "" + mResultDraw.getHeight() + mResultDraw.getWidth());
         Bitmap resultBmp = drawResultBitmap();
-        mFinalImage = overlay(mPickedImage, resultBmp);
+        float offsetX = (mPickedImage.getWidth() - mResultDraw.getWidth()) / 2;
+        float offsetY = 50f;
+        mFinalImage = overlay(mPickedImage, resultBmp, offsetX, offsetY);
+        Log.d("Final", "" + mFinalImage.getHeight() + mFinalImage.getWidth());
         saveBitmap(this, mFinalImage,
                 mPlayerName1.getText().toString() + "vs"
                         + mPlayerName2.getText().toString() + ".png");
