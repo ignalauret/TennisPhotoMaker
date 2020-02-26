@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Tennis photo</string>
+    <string name="rounds_prompt">Elige una ronda</string>
+
+    <string-array name="rounds_array">
+        <item>Primera Ronda</item>
+        <item>Segunda Ronda</item>
+        <item>Cuartos de Final</item>
+        <item>Semifinal</item>
+        <item>Final</item>
+    </string-array>
 </resources>

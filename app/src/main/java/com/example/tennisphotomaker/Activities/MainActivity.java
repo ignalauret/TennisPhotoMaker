@@ -2,6 +2,7 @@ package com.example.tennisphotomaker.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.Manifest;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,11 +19,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.tennisphotomaker.R;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.tennisphotomaker.Utils.BitmapUtils.*;
 import static com.example.tennisphotomaker.Utils.Constants.*;
@@ -34,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     EditText mResult;
     Button mSelectPhoto;
     Button mCreatePhoto;
+    Switch mPositionSwitch;
+    Spinner mRoundSpinner;
 
     /* Images */
     Bitmap mPickedImage;
@@ -70,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
                 createPhoto();
             }
         });
+        mPositionSwitch = findViewById(R.id.position_switch);
+        mRoundSpinner = findViewById(R.id.spinner);
     }
 
     /* *************************** Select photo ************************/
@@ -115,11 +125,11 @@ public class MainActivity extends AppCompatActivity {
     /* ***************************** Create photo *************************** */
 
     private void createPhoto() {
-        mResultDraw = BitmapFactory.decodeResource(getResources(), R.drawable.resultado_torneo2);
+        mResultDraw = BitmapFactory.decodeResource(getResources(), R.drawable.resultado_torneo_australian_open);
         Log.d("Result", "" + mResultDraw.getHeight() + mResultDraw.getWidth());
         Bitmap resultBmp = drawResultBitmap();
         float offsetX = (mPickedImage.getWidth() - mResultDraw.getWidth()) / 2;
-        float offsetY = 50f;
+        float offsetY = mPositionSwitch.isChecked() ? Y_OFFSET_UP : Y_OFFSET_DOWN;
         mFinalImage = overlay(mPickedImage, resultBmp, offsetX, offsetY);
         Log.d("Final", "" + mFinalImage.getHeight() + mFinalImage.getWidth());
         saveBitmap(this, mFinalImage,
@@ -135,20 +145,29 @@ public class MainActivity extends AppCompatActivity {
 
         Canvas canvas = new Canvas(result);
         canvas.drawBitmap(mResultDraw, 0, 0, null);
+        Typeface typeface = ResourcesCompat.getFont(this, R.font.montserrat_semibold);
 
         Paint namesPaint = new Paint();
         namesPaint.setColor(NAMES_COLOR);
         namesPaint.setTextSize(TEXT_SIZE);
         namesPaint.setAntiAlias(true);
+        namesPaint.setTypeface(typeface);
 
         Paint resultPaint = new Paint();
         resultPaint.setColor(RESULT_COLOR);
         resultPaint.setTextSize(TEXT_SIZE);
         resultPaint.setAntiAlias(true);
+        resultPaint.setTypeface(typeface);
 
+        Paint footerPaint = new Paint();
+        footerPaint.setColor(NAMES_COLOR);
+        footerPaint.setTextSize(FOOTER_TEXT_SIZE);
+        footerPaint.setAntiAlias(true);
+        footerPaint.setTypeface(typeface);
+        // Draw names
         canvas.drawText(mPlayerName1.getText().toString(), NAMES_X, FIRST_ROW_Y, namesPaint);
         canvas.drawText(mPlayerName2.getText().toString(), NAMES_X, SECOND_ROW_Y, namesPaint);
-
+        //  Draw Result
         String[] resultString = mResult.getText().toString().split("-");
         if(resultString.length == 2) {
             canvas.drawText(resultString[0].substring(0,1),
@@ -168,11 +187,14 @@ public class MainActivity extends AppCompatActivity {
                     SECOND_RESULT_3_SET, FIRST_ROW_Y, resultPaint);
             canvas.drawText(resultString[1].substring(1,2),
                     SECOND_RESULT_3_SET, SECOND_ROW_Y, resultPaint);
-            canvas.drawText(resultString[2].substring(0,1),
-                    THIRD_RESULT_3_SET, FIRST_ROW_Y, resultPaint);
-            canvas.drawText(resultString[2].substring(1,2),
+            canvas.drawText(resultString[2].substring(0,2),
+                    THIRD_RESULT_3_SET - 50f, FIRST_ROW_Y, resultPaint);
+            canvas.drawText(resultString[2].substring(2,3),
                     THIRD_RESULT_3_SET, SECOND_ROW_Y, resultPaint);
         }
+        // Draw footer
+        canvas.drawText(TOURNAMENT_NAME + String.valueOf(mRoundSpinner.getSelectedItem()), mResultDraw.getWidth() / 2 - 700, FOOTER_Y, footerPaint);
+
         return result;
     }
 
